@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="css/styles.css">
+   
+  </head>
+  <body>
+    <div class = 'header-contianer'>
+      <header class = 'header_sw' >
+        <p id = 'text-white'>Greenland Migrations - Where and Why</p>
+      </header>
+    </div>
+  
+    <main>
+      <div class="left-side"> 
+        <h1>Countries Data</h1>
+        <input type="text" id="country-name-filter" placeholder="Search by country name...">
+        <br>
+        <br>
+        <br>
+        <div style="margin-left: 5%;">        
+          countries found
+          <button id="clear-filter">Clear filter</button>
+        </div>
+        <p><section class="list-container">
+          <ol id="country-list"></ol>
+        </section></p>
+        
+        
+        <select id="continent-filter">
+          <option value="">Select a continent</option>
+          <option value="Africa">Africa</option>
+          <option value="Asia">Asia</option>
+          <option value="Europe">Europe</option>
+          <option value="America">America</option>
+          <option value="Oceania">Oceania</option>
+        </select>
+        <span id="changed"></span>
+        <div id="chart-container">
+          <canvas id="myChart"></canvas> 
+        </div>
+        <div id="chart-container2">
+          <canvas id="myChart2"></canvas> 
+        </div>
+        <div id="chart-container3">
+          <canvas id="myChart3"></canvas> 
+        </div>
+        <div id="chart-container4">
+          <canvas id="myChart4"></canvas>
+        </div>
+      </div>
+
+      <div id="map" class="map"></div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>
