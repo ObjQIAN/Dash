@@ -34,14 +34,17 @@ function updateWorldMap(geojsonData, CountryLayer, LineLayer) {
   const geoJsonLayer = L.geoJSON(geojsonData, {
     onEachFeature: function (feature, layer) {
       if (feature.properties) {
+        
         const popupContent = `
           <h2 class="country-name">${feature.properties.To_Country}</h2>
+          <canvas id="pieChart1"></canvas> 
           <p class="continent">Continent: ${feature.properties.continent}</p>
           <p class="area_km2">Area (km<sup>2</sup>): ${feature.properties.area_km2.toLocaleString()}</p>
           <p class="pop">Population: ${feature.properties.pop.toLocaleString()}</p>
           <p class="lifeExp">Life Expectancy: ${feature.properties.lifeExp.toFixed(2)}</p>
           <p class="gdpPercap">GDP per Capita: $${feature.properties.gdpPercap.toFixed(2)}</p>
         `;
+        //updatePieChartWithFilteredCountries(feature.properties);
         layer.bindPopup(popupContent);
       }
 
@@ -89,6 +92,8 @@ function updateWorldMap(geojsonData, CountryLayer, LineLayer) {
     LineLayer.clearLayers(); // Remove the line when the popup is closed
   });
 }
+
+
 
 export {
   initializeMap,

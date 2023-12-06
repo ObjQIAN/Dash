@@ -13,7 +13,8 @@ function updateCountryList(countries, events) {
 
   for (const country of countries) {
     html += `
-      <li data-country-id=${country.properties.To_Country}>${country.properties.To_Country} from ${country.properties.continent}</li>
+    <input type="checkbox" check-id=${country.properties.To_Country} value = ${country.properties.To_Country}>
+    <li data-country-id=${country.properties.To_Country}>${country.properties.To_Country} from ${country.properties.continent}</li>
     `;
   }
   countryList.innerHTML = html;
