@@ -13,42 +13,47 @@ function initializeMap(MigrationInfo, events) {
   const LineLayer = L.layerGroup(); 
   LineLayer.addTo(map); 
 
-  updateWorldMap(MigrationInfo.features, CountryLayer,LineLayer); // add all the countries to the map
+  const plotLayer = L.layerGroup();
+  plotLayer.addTo(map);
+
+  updateWorldMap(MigrationInfo.features, CountryLayer,LineLayer,plotLayer); // add all the countries to the map
 
   events.addEventListener('filter-countries', (evt) => { 
     const filteredCountries = evt.detail.filteredCountries;
-    updateWorldMap(filteredCountries, CountryLayer,LineLayer);
+    updateWorldMap(filteredCountries, CountryLayer,LineLayer,plotLayer);
   });
 
   return map;
 }
 
 
-function updateWorldMap(geojsonData, CountryLayer, LineLayer) {
+function updateWorldMap(geojsonData, CountryLayer, LineLayer, plotLayer) {
   CountryLayer.clearLayers(); 
   LineLayer.clearLayers(); 
+  plotLayer.clearLayers();
 
 
   const greenlandCoords = [71.706936, -42.604303];
-
+  
   const geoJsonLayer = L.geoJSON(geojsonData, {
     onEachFeature: function (feature, layer) {
       if (feature.properties) {
         
         const popupContent = `
           <h2 class="country-name">${feature.properties.To_Country}</h2>
-          <canvas id="pieChart1"></canvas> 
+          <canvas id="mypieChart1"></canvas> 
           <p class="continent">Continent: ${feature.properties.continent}</p>
           <p class="area_km2">Area (km<sup>2</sup>): ${feature.properties.area_km2.toLocaleString()}</p>
           <p class="pop">Population: ${feature.properties.pop.toLocaleString()}</p>
           <p class="lifeExp">Life Expectancy: ${feature.properties.lifeExp.toFixed(2)}</p>
           <p class="gdpPercap">GDP per Capita: $${feature.properties.gdpPercap.toFixed(2)}</p>
         `;
-        //updatePieChartWithFilteredCountries(feature.properties);
+
+       
         layer.bindPopup(popupContent);
+
       }
 
-      // Add a click event listener to the layer
       layer.on('click', function (e) {
         e.target.setStyle({
           color: 'yellow', 
@@ -61,28 +66,26 @@ function updateWorldMap(geojsonData, CountryLayer, LineLayer) {
         const clickedCountryCoords = e.latlng;
         const latlngs = [greenlandCoords, [clickedCountryCoords.lat, clickedCountryCoords.lng]];
         const polyline = L.polyline(latlngs, { color: 'red' }).addTo(LineLayer);
-
+        
         // Center the map on the clicked country
        // e.target._map.fitBounds(e.target.getBounds());
 
-        // To ensure the style resets when clicking on another feature
         geoJsonLayer.eachLayer(function (otherLayer) {
           if (otherLayer !== e.target) {
             geoJsonLayer.resetStyle(otherLayer);
           }
         });
-
-        // Remove the previous line if any
+      
         LineLayer.clearLayers();
-        // Add the new line to the map
         LineLayer.addLayer(polyline);
+        updatePieChartWithFilteredCountries(feature);
       });
     },
     style: {
-      color: 'blue', // Initial border color
-      fillColor: '#f2f2f2', // Initial fill color
-      fillOpacity: 0.2, // Initial fill opacity
-      weight: 2 // Initial border width
+      color: 'blue', 
+      fillColor: '#f2f2f2',
+      fillOpacity: 0.2, 
+      weight: 2
     }
   }).addTo(CountryLayer);
   
@@ -90,6 +93,45 @@ function updateWorldMap(geojsonData, CountryLayer, LineLayer) {
   geoJsonLayer.on('popupclose', function (e) {
     geoJsonLayer.resetStyle(e.target);
     LineLayer.clearLayers(); // Remove the line when the popup is closed
+    
+  });
+}
+//updatePieChartWithFilteredCountries(feature.properties);
+let pieChart1;
+function updatePieChartWithFilteredCountries(filteredCountries) {
+  //How to remove all the data from the chart??
+ 
+  if (pieChart1) {
+    pieChart1.destroy();
+  }
+  
+  const ctx4 = document.getElementById('mypieChart1').getContext('2d');
+  
+  const selectedCountry = filteredCountries;
+  const years = Object.keys(selectedCountry.properties.migdata);
+  const menImmigrationData = years.map(year => {
+    const yearData = selectedCountry.properties.migdata[year];
+    return yearData[0].MenImmigrations;
+  });
+
+  pieChart1 = new Chart(ctx4, {
+    type: 'bar',
+    data: {
+      labels: years,
+      datasets: [{
+        label: `Men Immigrations in ${selectedCountry.properties.To_Country}`,
+        data: menImmigrationData,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        },
+        
+      }
+    }
   });
 }
 

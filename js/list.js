@@ -1,35 +1,47 @@
-function initializeList(MigrationInfo, events) {
-  updateCountryList(MigrationInfo.features, events);
+function initializeList(MigrationInfo, events,countryToPlot) {
+  updateCountryList(MigrationInfo.features, events,countryToPlot);
 
   events.addEventListener('filter-countries', (evt) => {
     const filteredCountries = evt.detail.filteredCountries;
-    updateCountryList(filteredCountries, events);
+    updateCountryList(filteredCountries, events,countryToPlot);
   });
 }
 
-function updateCountryList(countries, events) {
+function updateCountryList(countries, events,countryToPlot) {
   const countryList = document.querySelector('#country-list'); 
   let html = '';
 
   for (const country of countries) {
     html += `
-    <input type="checkbox" check-id=${country.properties.To_Country} value = ${country.properties.To_Country}>
-    <li data-country-id=${country.properties.To_Country}>${country.properties.To_Country} from ${country.properties.continent}</li>
+      <li>
+        <input type="checkbox" class="country-checkbox" value="${country.properties.To_Country}">
+        ${country.properties.To_Country} 
+      </li>
     `;
   }
   countryList.innerHTML = html;
 
-  for (const li of countryList.querySelectorAll('li')) {
-    li.addEventListener('mouseover', (evt) => {
-      const countryId = evt.target.dataset.countryId;
-      const newEvent = new CustomEvent('focus-country', {
-        detail: { countryId },
-      });
-      events.dispatchEvent(newEvent);
-    });
-  }
+
+  document.querySelectorAll('.country-checkbox').forEach(checkbox => {
+    checkbox.addEventListener('change', () => {handleCheckboxChange(events,countryToPlot)});
+  });
+}
+
+function handleCheckboxChange(events,countryToPlot) {
+  
+
+  document.querySelectorAll('.country-checkbox:checked').forEach(checkbox => {
+    if(!countryToPlot.includes(checkbox.value)){
+      countryToPlot.push(checkbox.value);}
+  });
+
+  // Update the paragraph with selected country names
+  const paragraph = document.querySelector('#selected-countries');
+  paragraph.textContent = 'Selected Countries: ' + countryToPlot.join(', ');
+  console.log(countryToPlot);
 }
 
 export {
   initializeList,
 };
+

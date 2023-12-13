@@ -3,6 +3,28 @@ body {
   padding: 0;
 }
 
+
+.leaflet-popup-content-wrapper {
+  background-color: rgb(70, 77, 80);
+  opacity: 0.85;
+}
+
+.leaflet-popup-content-wrapper .leaflet-popup-content {
+
+  font-weight: bold;
+  color: white;
+}
+
+.leaflet-popup-tip-container {
+}
+
+.country-name  {
+  font-family: 'Permanent Marker';
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+}
+
 .map {
   height: 99vh;
   background-color: aliceblue;  
@@ -49,7 +71,7 @@ main {
   width: 100%;
 }
 
-.myChart {
+.myChart  {
   width: 100px;
   height: 100px;
 }
