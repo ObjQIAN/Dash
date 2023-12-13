@@ -3,7 +3,7 @@ function initializeSearch(MigrationInfo, events) {
   searchBox.addEventListener('input', (evt) => {
     handleSearchBoxInput(evt, MigrationInfo.features, events);
   });
-  
+
 }
 
 function handleSearchBoxInput(evt, MigrationInfo, events) {
@@ -27,6 +27,11 @@ function updateFilteredCountries(MigrationInfo, events) {
   const newEvent = new CustomEvent('filter-countries', { detail: { filteredCountries }});
   events.dispatchEvent(newEvent);
 }
+
+function clearAllSearch() {
+  const searchBox = document.querySelector('#country-name-filter');
+  const clearButton = document.querySelector('#clear-filter-button');
+  document.getElementById("country-name-filter").value = "";} 
 
 export {
   initializeSearch,
