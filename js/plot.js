@@ -1,29 +1,65 @@
 function initializeplot(MigrationInfo, events) {
-  const searchBox = document.querySelector('#country-name-filter');
-  searchBox.addEventListener('input', (evt) => {
-    handleSearchBoxInput(evt, MigrationInfo.features, events);
+  
+  events.addEventListener('plotChange', function(event) {
+    const countryToPlot = event.detail.countryToPlot;
+    //console.log(countryToPlot);
+    handleSearchBoxInput(countryToPlot, MigrationInfo,events);
+    // Process countryToPlot
   });
 
+  events.addEventListener('plotStop', function(event) {
+    const countryToPlot = event.detail.countryToPlot;
+    //console.log(countryToPlot);
+    handleSearchBoxInput(countryToPlot, MigrationInfo,events);
+    // Process countryToPlot
+  });
 }
 
-function handleSearchBoxInput(evt, MigrationInfo, events) {
-  updateFilteredCountries(MigrationInfo, events);
+function handleSearchBoxInput(countryToPlot, MigrationInfo, events) {
+  updateFilteredCountries(countryToPlot, MigrationInfo, events);
 }
 
-function updateFilteredCountries(MigrationInfo, events) {
-  const searchBox = document.querySelector('#country-name-filter');
-  const lowercaseValue = searchBox.value.toLowerCase();
-
+function updateFilteredCountries(countryToPlot, MigrationInfo, events) {
+  const searchBox = countryToPlot;
+ 
+  
   const filteredCountries = [];
-  for (const country of MigrationInfo) {
-    if (country.properties.To_Country.toLowerCase().includes(lowercaseValue)) {
+  const filteredCountriesMig = {};
+  for (const country of MigrationInfo.features) {
+    if (searchBox.includes(country.properties.To_Country)) {
+      filteredCountries.push(country);
+  
+      // Aggregate the data for migdata
+      for (const year in country.properties.migdata) {
+        if (!filteredCountriesMig[year]) {
+          filteredCountriesMig[year] = {
+            MenImmigrations: 0,
+            WomenImmigrations: 0,
+            MenEmigrations: 0,
+            WomenEmigrations: 0
+          };
+        }
+  
+        const yearData = country.properties.migdata[year][0];
+        filteredCountriesMig[year].MenImmigrations += yearData.MenImmigrations || 0;
+        filteredCountriesMig[year].WomenImmigrations += yearData.WomenImmigrations || 0;
+        filteredCountriesMig[year].MenEmigrations += yearData.MenEmigrations || 0;
+        filteredCountriesMig[year].WomenEmigrations += yearData.WomenEmigrations || 0;
+      }
+    }
+  };
+  
+ /* for (const country of MigrationInfo) {
+    if (country.properties.To_Country.includes(searchBox)) {
       filteredCountries.push(country);
     }
-  }
-
+  };*/
+  console.log(filteredCountriesMig);
   const newEvent = new CustomEvent('filter-countries', { detail: { filteredCountries } });
   events.dispatchEvent(newEvent);
-  updateChartWithFilteredCountries(filteredCountries);
+  
+
+  updateChartWithFilteredCountries(filteredCountriesMig);
 }
 
 let chart1 = null;
@@ -31,12 +67,7 @@ let chart2 = null;
 let chart3 = null;
 let chart4 = null;
 function updateChartWithFilteredCountries(filteredCountries) {
-  //How to remove all the data from the chart??
 
-  /*ctx1.clearRect(0, 0, canvas.width, canvas.height);
-  ctx2.clearRect(0, 0, canvas.width, canvas.height);
-  ctx3.clearRect(0, 0, canvas.width, canvas.height);
-  ctx4.clearRect(0, 0, canvas.width, canvas.height);*/
   if (chart1) {
     chart1.destroy();
   }
@@ -56,24 +87,45 @@ function updateChartWithFilteredCountries(filteredCountries) {
 
 
 
-  const selectedCountry = filteredCountries[0];
-  const years = Object.keys(selectedCountry.properties.migdata);
+  const selectedCountry = filteredCountries;
+
+ // const years = Object.keys(filteredCountries);
+  //return sum of all the values in an array
+  
+
+  let menImmigrationData = [];
+  let womenImmigrationData = [];
+  let menEmigrationData = [];
+  let womenEmigrationData = [];
+
+  const years = Object.keys(filteredCountries);
+
+  // Extract data for each year
+  years.forEach(year => {
+    const yearData = filteredCountries[year];
+    menImmigrationData.push(yearData.MenImmigrations || 0);
+    womenImmigrationData.push(yearData.WomenImmigrations || 0);
+    menEmigrationData.push(yearData.MenEmigrations || 0);
+    womenEmigrationData.push(yearData.WomenEmigrations || 0);
+  });
+  
+/*
   const menImmigrationData = years.map(year => {
-    const yearData = selectedCountry.properties.migdata[year];
+    const yearData = filteredCountries[year];
     return yearData[0].MenImmigrations;
   });
   const womenImmigrationData = years.map(year => {
-    const yearData = selectedCountry.properties.migdata[year];
+    const yearData = filteredCountries[year];
     return yearData[0].WomenImmigrations;
   });
   const menEmigrationData = years.map(year => {
-    const yearData = selectedCountry.properties.migdata[year];
+    const yearData = filteredCountries[year];
     return yearData[0].MenEmigrations;
   });
   const WomenEmigrationData = years.map(year => {
-    const yearData = selectedCountry.properties.migdata[year];
+    const yearData = filteredCountries[year];
     return yearData[0].WomenEmigrations;
-  });
+  });*/
 
 
   chart1 = new Chart(ctx1, {
@@ -81,7 +133,7 @@ function updateChartWithFilteredCountries(filteredCountries) {
     data: {
       labels: years,
       datasets: [{
-        label: `Men Immigrations in ${selectedCountry.properties.To_Country}`,
+        label: `Men Immigrations in`,
         data: menImmigrationData,
         borderWidth: 1
       }]
@@ -101,7 +153,7 @@ function updateChartWithFilteredCountries(filteredCountries) {
     data: {
       labels: years,
       datasets: [{
-        label: `Women Immigrations in ${selectedCountry.properties.To_Country}`,
+        label: `Women Immigrations in `,
         data: womenImmigrationData,
         borderWidth: 1
       }]
@@ -121,7 +173,7 @@ function updateChartWithFilteredCountries(filteredCountries) {
     data: {
       labels: years,
       datasets: [{
-        label: `Men Emigrations in ${selectedCountry.properties.To_Country}`,
+        label: `Men Emigrations in `,
         data: menEmigrationData,
         borderWidth: 1
       }]
@@ -141,8 +193,8 @@ function updateChartWithFilteredCountries(filteredCountries) {
     data: {
       labels: years,
       datasets: [{
-        label: `Women Emigrations in ${selectedCountry.properties.To_Country}`,
-        data: WomenEmigrationData,
+        label: `Women Emigrations in `,
+        data: womenEmigrationData,
         borderWidth: 1
       }]
     },

@@ -13,4 +13,4 @@ initializeMap(MigrationInfo, events);
 initializeList(MigrationInfo, events,countryToPlot);
 initializeSearch(MigrationInfo, events);
 initializeContinentFilter(MigrationInfo, events);
-initializeplot(MigrationInfo, events);
+initializeplot(MigrationInfo, events,countryToPlot);
