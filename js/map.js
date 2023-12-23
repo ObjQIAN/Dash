@@ -18,13 +18,13 @@ function initializeMap(MigrationInfo, events) {
 
   updateWorldMap(MigrationInfo.features, CountryLayer,LineLayer); // add all the countries to the map
 
-  
+  /*
   events.addEventListener('filter-countries', (evt) => { 
     const filteredCountries = evt.detail.filteredCountries;
     //console.log(filteredCountries);
     //这里还没写好，需要把处理[0]
     updateWorldMap(filteredCountries, CountryLayer,LineLayer,plotLayer);
-  });
+  });*/
 
   events.addEventListener('focus-country', (evt) => {
     const countryName = evt.detail.countryName;

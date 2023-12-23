@@ -59,6 +59,35 @@ body {
   font-size: 2rem;
 }
 
+#download-combined-chart{
+  align-items: center;
+  appearance: none;
+  background-color: #FCFCFD;
+  border-radius: 4px;
+  border-width: 0;
+  height: auto;
+  color: #212529;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 400;
+  height: 2.5rem;
+  justify-content: center;
+  line-height: 1.5;
+  padding-bottom: calc(.5em - 1px);
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: calc(.5em - 1px);
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition: all .15s ease-in-out;
+  user-select: none;
+  vertical-align: middle;
+  white-space: nowrap
+}
+
 #country-counter{
   color: #fff;
   font-family: Arial, Helvetica, sans-serif;
@@ -72,8 +101,8 @@ main {
 }
 
 .myChart  {
-  width: 100px;
-  height: 100px;
+  width: 800px;
+  height: 600px;
 }
 
 .list-container {

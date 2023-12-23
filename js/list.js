@@ -1,10 +1,13 @@
 function initializeList(MigrationInfo, events,countryToPlot) {
+
+  
+
   updateCountryList(MigrationInfo.features, events,countryToPlot);
 
-  events.addEventListener('filter-countries', (evt) => {
-    const filteredCountries = evt.detail.filteredCountries;
-    updateCountryList(filteredCountries, events,countryToPlot);
-  });
+ // events.addEventListener('filter-countries', (evt) => {
+ //   const filteredCountries = evt.detail.filteredCountries;
+ //   updateCountryList(filteredCountries, events,countryToPlot);
+ // });
 
   checkIfClearCountryFilter(countryToPlot,events) 
 }
@@ -39,7 +42,7 @@ function updateCountryList(countries, events,countryToPlot) {
   }
   countryList.innerHTML = html;
 
-  for (const li of countryList.querySelectorAll('li')) {
+  /*for (const li of countryList.querySelectorAll('li')) {
     li.addEventListener('mouseover', (evt) => {
       //console.log(evt.target.dataset.countryHovor);
       const countryName = evt.target.dataset.countryHovor;
@@ -48,12 +51,15 @@ function updateCountryList(countries, events,countryToPlot) {
       });
       events.dispatchEvent(newEvent);
     });
-  }
+  }*/
   document.querySelectorAll('.country-checkbox').forEach(checkbox => {
     if(countryToPlot.includes(checkbox.value)){
       checkbox.checked = true;};
     checkbox.addEventListener('change', () => {handleCheckboxChange(events,countryToPlot)});
+    //checkbox.addEventListener('change', () => {handleCheckboxChange(events,countryToPlot)});
   });
+  const paragraph = document.querySelector('#selected-countries');
+  paragraph.textContent = countryToPlot.join(', ');
 }
 
 function handleCheckboxChange(events,countryToPlot) {

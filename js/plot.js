@@ -2,7 +2,7 @@ function initializeplot(MigrationInfo, events) {
   
   events.addEventListener('plotChange', function(event) {
     const countryToPlot = event.detail.countryToPlot;
-    //console.log(countryToPlot);
+    console.log(countryToPlot);
     handleSearchBoxInput(countryToPlot, MigrationInfo,events);
     // Process countryToPlot
   });
@@ -13,6 +13,13 @@ function initializeplot(MigrationInfo, events) {
     handleSearchBoxInput(countryToPlot, MigrationInfo,events);
     // Process countryToPlot
   });
+
+  //document.addEventListener("DOMContentLoaded", handleSearchBoxInput(countryToPlot, MigrationInfo,events));
+  /*events.addEventListener('loadPage', function(event) {
+    const countryToPlot = event.detail.countryToPlot;
+    console.log(countryToPlot);
+    handleSearchBoxInput(countryToPlot, MigrationInfo,events);
+  });*/
 }
 
 function handleSearchBoxInput(countryToPlot, MigrationInfo, events) {
@@ -21,13 +28,13 @@ function handleSearchBoxInput(countryToPlot, MigrationInfo, events) {
 
 function updateFilteredCountries(countryToPlot, MigrationInfo, events) {
   const searchBox = countryToPlot;
- 
   
-  const filteredCountries = [];
+  
+  //const filteredCountries = [];
   const filteredCountriesMig = {};
   for (const country of MigrationInfo.features) {
     if (searchBox.includes(country.properties.To_Country)) {
-      filteredCountries.push(country);
+      //filteredCountries.push(country);
   
       // Aggregate the data for migdata
       for (const year in country.properties.migdata) {
@@ -49,25 +56,22 @@ function updateFilteredCountries(countryToPlot, MigrationInfo, events) {
     }
   };
   
- /* for (const country of MigrationInfo) {
-    if (country.properties.To_Country.includes(searchBox)) {
-      filteredCountries.push(country);
-    }
-  };*/
-  console.log(filteredCountriesMig);
-  const newEvent = new CustomEvent('filter-countries', { detail: { filteredCountries } });
-  events.dispatchEvent(newEvent);
+
+  //console.log(filteredCountriesMig);
+  //const newEvent = new CustomEvent('filter-countries', { detail: { filteredCountries } });
+  //events.dispatchEvent(newEvent);
   
 
-  updateChartWithFilteredCountries(filteredCountriesMig);
+  updateChartWithFilteredCountries(countryToPlot,filteredCountriesMig);
 }
 
 let chart1 = null;
 let chart2 = null;
 let chart3 = null;
 let chart4 = null;
-function updateChartWithFilteredCountries(filteredCountries) {
-
+function updateChartWithFilteredCountries(countryToPlot,filteredCountries) {
+  const plotContext =   countryToPlot.join(', ');
+  //console.log(plotContext);
   if (chart1) {
     chart1.destroy();
   }
@@ -133,17 +137,27 @@ function updateChartWithFilteredCountries(filteredCountries) {
     data: {
       labels: years,
       datasets: [{
-        label: `Men Immigrations in`,
+        label: `Men Immis in ${plotContext}`,
         data: menImmigrationData,
+        backgroundColor: 'rgba(56, 104, 125, 0.6)',
+        borderColor: 'rgba(56, 104, 125, 1)', 
         borderWidth: 1
       }]
     },
     options: {
       scales: {
         y: {
-          beginAtZero: true
+          beginAtZero: true,
+          grid: {
+            color: 'rgba(255, 255, 255, 0.5)' // Lighter grid lines
+          }
+        },
+        x: {
+          grid: {
+            color: 'rgba(255, 255, 255, 0.5)' // Lighter grid lines
+          }
         }
-      }
+      },
     }
   });
 
@@ -153,17 +167,28 @@ function updateChartWithFilteredCountries(filteredCountries) {
     data: {
       labels: years,
       datasets: [{
-        label: `Women Immigrations in `,
+        label: `Women Immigrations in ${plotContext}`,
         data: womenImmigrationData,
+        backgroundColor: 'rgba(255, 99, 132, 0.7)',
+        borderColor: 'rgba(255, 99, 132, 1)', 
         borderWidth: 1
       }]
     },
     options: {
       scales: {
         y: {
-          beginAtZero: true
+          beginAtZero: true,
+          grid: {
+            color: 'rgba(255, 255, 255, 0.5)' // Lighter grid lines
+          }
+        },
+        x: {
+          grid: {
+            color: 'rgba(255, 255, 255, 0.5)' // Lighter grid lines
+          }
         }
-      }
+      },
+
     }
   });
 
@@ -173,17 +198,27 @@ function updateChartWithFilteredCountries(filteredCountries) {
     data: {
       labels: years,
       datasets: [{
-        label: `Men Emigrations in `,
+        label: `Men Emis in ${plotContext}`,
         data: menEmigrationData,
+        backgroundColor: 'rgba(56, 104, 125, 0.6)',
+        borderColor: 'rgba(56, 104, 125, 1)', 
         borderWidth: 1
       }]
     },
     options: {
       scales: {
         y: {
-          beginAtZero: true
+          beginAtZero: true,
+          grid: {
+            color: 'rgba(255, 255, 255, 0.5)' // Lighter grid lines
+          }
+        },
+        x: {
+          grid: {
+            color: 'rgba(255, 255, 255, 0.5)' // Lighter grid lines
+          }
         }
-      }
+      },
     }
   });
 
@@ -193,24 +228,95 @@ function updateChartWithFilteredCountries(filteredCountries) {
     data: {
       labels: years,
       datasets: [{
-        label: `Women Emigrations in `,
+        label: `Women Emis in ${plotContext}`,
         data: womenEmigrationData,
+        backgroundColor: 'rgba(255, 99, 132, 0.7)',
+        borderColor: 'rgba(255, 99, 132, 1)', 
         borderWidth: 1
       }]
     },
     options: {
       scales: {
         y: {
-          beginAtZero: true
+          beginAtZero: true,
+          grid: {
+            color: 'rgba(255, 255, 255, 0.5)' // Lighter grid lines
+          }
+        },
+        x: {
+          grid: {
+            color: 'rgba(255, 255, 255, 0.5)' // Lighter grid lines
+          }
         }
-      }
+      },
     }
   });
+
+  document.getElementById('download-combined-chart').addEventListener('click', downloadCombinedCharts);
+
+  // Note:
+  // This code is from a combination of ChatGPT and StackOverflow, I did not write it myself
+  function renderChartToCanvas(chart) {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = image.width *5;
+        canvas.height = image.height *5;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(image, 0, 0);
+        resolve(canvas);
+      };
+      image.onerror = reject;
+      image.src = chart.toBase64Image();
+    });
+  };
+  
+
+  async function downloadCombinedCharts() {
+    try {
+     
+      const canvases = await Promise.all([
+        renderChartToCanvas(chart1),
+        renderChartToCanvas(chart2),
+        renderChartToCanvas(chart3),
+        renderChartToCanvas(chart4)
+      ]);
+  
+      // Create a new canvas to combine the individual canvases
+      const combinedCanvas = document.createElement('canvas');
+      const combinedCtx = combinedCanvas.getContext('2d');
+  
+      // Set the dimensions of the combined canvas
+      combinedCanvas.width = canvases[0].width * 2;
+      combinedCanvas.height = canvases[0].height * 2;
+  
+      // Draw each individual canvas onto the combined canvas
+      canvases.forEach((canvas, index) => {
+        const x = (index % 2) * canvas.width;
+        const y = Math.floor(index / 2) * canvas.height;
+        const scaleFactor = 5; 
+        combinedCtx.drawImage(canvas, x, y, canvas.width * scaleFactor, canvas.height * scaleFactor);
+      });
+  
+      // Trigger the download
+      const link = document.createElement('a');
+      link.href = combinedCanvas.toDataURL('image/png');
+      link.download = 'combined_charts.png';
+      link.click();
+  
+    } catch (error) {
+      console.error('Error combining charts:', error);
+    }
+  };
+  
+
+
 }
 
 
 
 export {
   initializeplot,
+  handleSearchBoxInput
 };
-
