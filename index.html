@@ -17,32 +17,33 @@
 
     <main>
       <div class="left-side"> 
+        <br>
         <input type="text" id="country-name-filter" placeholder="Search by country name...">
         <br>
         <br>
         <br>
-        <div style="margin-left: 5%;">        
+        <div style="margin-left: 5%">        
           countries found
           <button id="clear-filter-button" >Clear filter</button> 
         </div>
         <section class="list-container">
           <ol id="country-list"></ol>
         </section>
-        <p>Selected Countries:</p>
-        <p id="selected-countries"></p>
-        <button id = 'clear-country-filter'>Clear Selection</button>
+        <p style="margin-left: 5%">Selected Countries:</p>
+        <p id="selected-countries" style="margin-left: 5%"></p>
+        <button id = 'clear-country-filter' style="margin-left: 10%">Clear Selection</button>
         
         
             
-            
-        <select id="continent-filter">
-          <option value="">Select a continent</option>
+         <!--        <select id="continent-filter">
+          <option value="">NOT WORKING</option>
           <option value="Africa">Africa</option>
           <option value="Asia">Asia</option>
           <option value="Europe">Europe</option>
           <option value="America">America</option>
           <option value="Oceania">Oceania</option>
-        </select>
+        </select>-->  
+
         <br>
         <span id="changed"></span>
         <br>
@@ -52,7 +53,10 @@
           <canvas id="myChart3"></canvas> 
           <canvas id="myChart4"></canvas>
         </div>
-        <button  id = 'download-combined-chart' >Download Combined Charts</button>
+        <p></p>
+        <button  id = 'download-combined-chart' style="position: relative; margin-left: 20%;" >Download Charts - </button>
+        <p></p>
+        <button id = 'show-support' style="position: relative; margin-left: 20%;" >Support Greenland!</button>
       </div>
       
       <div id="map" class="map"></div>

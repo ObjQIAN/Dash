@@ -4,10 +4,10 @@ function initializeList(MigrationInfo, events,countryToPlot) {
 
   updateCountryList(MigrationInfo.features, events,countryToPlot);
 
- // events.addEventListener('filter-countries', (evt) => {
- //   const filteredCountries = evt.detail.filteredCountries;
- //   updateCountryList(filteredCountries, events,countryToPlot);
- // });
+  events.addEventListener('filter-countries', (evt) => {
+    const filteredCountries = evt.detail.filteredCountries;
+    updateCountryList(filteredCountries, events,countryToPlot);
+  });
 
   checkIfClearCountryFilter(countryToPlot,events) 
 }

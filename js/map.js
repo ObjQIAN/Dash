@@ -25,7 +25,7 @@ function initializeMap(MigrationInfo, events) {
     //这里还没写好，需要把处理[0]
     updateWorldMap(filteredCountries, CountryLayer,LineLayer,plotLayer);
   });*/
-
+  /*
   events.addEventListener('focus-country', (evt) => {
     const countryName = evt.detail.countryName;
     CountryLayer.eachLayer((CountryLayer) => {
@@ -34,7 +34,7 @@ function initializeMap(MigrationInfo, events) {
         CountryLayer.openPopup();
       }
     });
-  });
+  });*/
   return map;
 }
 
@@ -107,7 +107,7 @@ function updateWorldMap(geojsonData, CountryLayer, LineLayer) {
         
       LineLayer.addLayer(polyline);
 
-      updatePieChartWithFilteredCountries(e.target.feature,pieChart1);
+      updatePieChartWithFilteredCountries(e.target.feature);
       });
     },
     style: {
@@ -130,23 +130,89 @@ function updateWorldMap(geojsonData, CountryLayer, LineLayer) {
 
 let pieChart1 = null;
 
-function updatePieChartWithFilteredCountries(filteredCountries,pieChart1) {
+function updatePieChartWithFilteredCountries(filteredCountries) {
   if (pieChart1) {
     pieChart1.destroy();
   };
 
-  const ctx4 = document.getElementById('mypieChart1').getContext('2d');
+ // const ctx4 = document.getElementById('mypieChart1').getContext('2d');
   const selectedCountry = filteredCountries;
   const years = Object.keys(selectedCountry.properties.migdata);
-  const menImmigrationData = years.map(year => {
+
+
+  // Initialize sums
+  let MenImmigrations = 0;
+  let MenEmigrations = 0;
+  let WomenImmigrations = 0;
+  let WomenEmigrations = 0;
+
+  // Loop through each year and add up the values
+  for (const year of years) {
+    const yearData = selectedCountry.properties.migdata[year];
+    MenImmigrations += yearData[0].MenImmigrations;
+    MenEmigrations += yearData[0].MenEmigrations;
+    WomenImmigrations += yearData[0].WomenImmigrations;
+    WomenEmigrations += yearData[0].WomenEmigrations;
+  }
+
+//console.log({ MenImmigrations, MenEmigrations, WomenImmigrations, WomenEmigrations }); 
+
+  /*const sums = years.reduce((accumulator, year) => {
+    const yearData = selectedCountry.properties.migdata[year];
+    accumulator.MenImmigrations += yearData[0].MenImmigrations;
+    accumulator.MenEmigrations += yearData[0].MenEmigrations;
+    accumulator.WomenImmigrations += yearData[0].WomenImmigrations;
+    accumulator.WomenEmigrations += yearData[0].WomenEmigrations;
+    return accumulator;
+  }, { MenImmigrations: 0, MenEmigrations: 0, WomenImmigrations: 0, WomenEmigrations: 0 });
+  
+  console.log(sums);*/
+  
+
+
+
+  const piedata = {
+    labels: ['Men Immigrations', 'Men Emigrations', 'Women Immigrations', 'Women Emigrations'],
+    datasets: [{
+        label: 'Migration Data',
+        data: [MenImmigrations, MenEmigrations, WomenImmigrations, WomenEmigrations],
+        backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)'
+        ],
+        borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)'
+        ],
+        borderWidth: 1
+    }]
+};
+
+// Config
+const config = {
+    type: 'pie',
+    data: piedata,
+};
+
+// Render the chart
+ pieChart1 = new Chart(
+    document.getElementById('mypieChart1'),
+    config
+);
+
+  /*const menImmigrationData = years.map(year => {
     const yearData = selectedCountry.properties.migdata[year];
     return yearData[0].MenImmigrations;
-  });
+  });*/
 
   //console.log(menImmigrationData);
 
-  pieChart1 = new Chart(ctx4, {
-    type: 'bar',
+  /*pieChart1 = new Chart(ctx4, {
+    type: 'pie',
     data: {
       labels: years,
       datasets: [{
@@ -165,7 +231,7 @@ function updatePieChartWithFilteredCountries(filteredCountries,pieChart1) {
   });
   console.log(pieChart1);
 }
-
+*/
 
 /*
 function updatePieChartWithFilteredCountries(filteredCountries) {
@@ -202,8 +268,8 @@ function updatePieChartWithFilteredCountries(filteredCountries) {
         
       }
     }
-  });
-}*/
+  });*/
+}
 
 
 

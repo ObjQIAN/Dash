@@ -2,24 +2,19 @@ function initializeplot(MigrationInfo, events) {
   
   events.addEventListener('plotChange', function(event) {
     const countryToPlot = event.detail.countryToPlot;
-    console.log(countryToPlot);
+    //console.log(countryToPlot);
     handleSearchBoxInput(countryToPlot, MigrationInfo,events);
-    // Process countryToPlot
+    
   });
 
   events.addEventListener('plotStop', function(event) {
     const countryToPlot = event.detail.countryToPlot;
     //console.log(countryToPlot);
     handleSearchBoxInput(countryToPlot, MigrationInfo,events);
-    // Process countryToPlot
+    
   });
 
-  //document.addEventListener("DOMContentLoaded", handleSearchBoxInput(countryToPlot, MigrationInfo,events));
-  /*events.addEventListener('loadPage', function(event) {
-    const countryToPlot = event.detail.countryToPlot;
-    console.log(countryToPlot);
-    handleSearchBoxInput(countryToPlot, MigrationInfo,events);
-  });*/
+
 }
 
 function handleSearchBoxInput(countryToPlot, MigrationInfo, events) {
@@ -36,7 +31,7 @@ function updateFilteredCountries(countryToPlot, MigrationInfo, events) {
     if (searchBox.includes(country.properties.To_Country)) {
       //filteredCountries.push(country);
   
-      // Aggregate the data for migdata
+      
       for (const year in country.properties.migdata) {
         if (!filteredCountriesMig[year]) {
           filteredCountriesMig[year] = {
@@ -57,9 +52,7 @@ function updateFilteredCountries(countryToPlot, MigrationInfo, events) {
   };
   
 
-  //console.log(filteredCountriesMig);
-  //const newEvent = new CustomEvent('filter-countries', { detail: { filteredCountries } });
-  //events.dispatchEvent(newEvent);
+
   
 
   updateChartWithFilteredCountries(countryToPlot,filteredCountriesMig);
@@ -94,7 +87,7 @@ function updateChartWithFilteredCountries(countryToPlot,filteredCountries) {
   const selectedCountry = filteredCountries;
 
  // const years = Object.keys(filteredCountries);
-  //return sum of all the values in an array
+  //return sum 
   
 
   let menImmigrationData = [];
@@ -112,24 +105,7 @@ function updateChartWithFilteredCountries(countryToPlot,filteredCountries) {
     menEmigrationData.push(yearData.MenEmigrations || 0);
     womenEmigrationData.push(yearData.WomenEmigrations || 0);
   });
-  
-/*
-  const menImmigrationData = years.map(year => {
-    const yearData = filteredCountries[year];
-    return yearData[0].MenImmigrations;
-  });
-  const womenImmigrationData = years.map(year => {
-    const yearData = filteredCountries[year];
-    return yearData[0].WomenImmigrations;
-  });
-  const menEmigrationData = years.map(year => {
-    const yearData = filteredCountries[year];
-    return yearData[0].MenEmigrations;
-  });
-  const WomenEmigrationData = years.map(year => {
-    const yearData = filteredCountries[year];
-    return yearData[0].WomenEmigrations;
-  });*/
+
 
 
   chart1 = new Chart(ctx1, {
@@ -167,7 +143,7 @@ function updateChartWithFilteredCountries(countryToPlot,filteredCountries) {
     data: {
       labels: years,
       datasets: [{
-        label: `Women Immigrations in ${plotContext}`,
+        label: `Women Immis in ${plotContext}`,
         data: womenImmigrationData,
         backgroundColor: 'rgba(255, 99, 132, 0.7)',
         borderColor: 'rgba(255, 99, 132, 1)', 
@@ -255,7 +231,7 @@ function updateChartWithFilteredCountries(countryToPlot,filteredCountries) {
   document.getElementById('download-combined-chart').addEventListener('click', downloadCombinedCharts);
 
   // Note:
-  // This code is from a combination of ChatGPT and StackOverflow, I did not write it myself
+  // This code is from a combination of CHATGPT and StackOverflow, I did not write it myself
   function renderChartToCanvas(chart) {
     return new Promise((resolve, reject) => {
       const image = new Image();
@@ -282,16 +258,13 @@ function updateChartWithFilteredCountries(countryToPlot,filteredCountries) {
         renderChartToCanvas(chart3),
         renderChartToCanvas(chart4)
       ]);
-  
-      // Create a new canvas to combine the individual canvases
+
       const combinedCanvas = document.createElement('canvas');
       const combinedCtx = combinedCanvas.getContext('2d');
-  
-      // Set the dimensions of the combined canvas
+
       combinedCanvas.width = canvases[0].width * 2;
       combinedCanvas.height = canvases[0].height * 2;
-  
-      // Draw each individual canvas onto the combined canvas
+
       canvases.forEach((canvas, index) => {
         const x = (index % 2) * canvas.width;
         const y = Math.floor(index / 2) * canvas.height;

@@ -1,21 +1,19 @@
 function initializeSearch(MigrationInfo, events) {
   const searchBox = document.querySelector('#country-name-filter');
-  searchBox.addEventListener('input', (evt) => {
-    handleSearchBoxInput(evt, MigrationInfo.features, events);
+  searchBox.addEventListener('input', () => {
+    updateFilteredCountries(MigrationInfo.features, events);
   });
-
+  document.getElementById('clear-filter-button').addEventListener('click', clearAllSearch);
 }
 
-function handleSearchBoxInput(evt, MigrationInfo, events) {
-  updateFilteredCountries(MigrationInfo, events);
-}
 
 function updateFilteredCountries(MigrationInfo, events) {
   const searchBox = document.querySelector('#country-name-filter');
   const lowercaseValue = searchBox.value.toLowerCase();
-
+  
   const filteredCountries = [];
   for (const country of MigrationInfo) {
+    
     if (country.properties.To_Country.toLowerCase().includes(lowercaseValue)) {
       filteredCountries.push(country);
     }
@@ -29,9 +27,9 @@ function updateFilteredCountries(MigrationInfo, events) {
 }
 
 function clearAllSearch() {
-  const searchBox = document.querySelector('#country-name-filter');
-  const clearButton = document.querySelector('#clear-filter-button');
-  document.getElementById("country-name-filter").value = "";} 
+
+  document.getElementById("country-name-filter").value = "";
+} 
 
 export {
   initializeSearch,
