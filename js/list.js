@@ -35,8 +35,10 @@ function updateCountryList(countries, events,countryToPlot) {
   for (const country of countries) {
     html += `
       <li data-country-hovor="${country.properties.To_Country}" >
-        <input type="checkbox" class="country-checkbox" value="${country.properties.To_Country}">
-        ${country.properties.To_Country} 
+        <label>  
+          <input type="checkbox" class="country-checkbox" value="${country.properties.To_Country}">
+          ${country.properties.To_Country} 
+        </label>
       </li>
     `;
   }

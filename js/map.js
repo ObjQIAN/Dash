@@ -107,7 +107,7 @@ function updateWorldMap(geojsonData, CountryLayer, LineLayer) {
         
       LineLayer.addLayer(polyline);
 
-      updatePieChartWithFilteredCountries(e.target.feature);
+      setTimeout(() => updatePieChartWithFilteredCountries(e.target.feature), 200);
       });
     },
     style: {
