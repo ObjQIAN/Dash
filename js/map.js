@@ -177,10 +177,10 @@ function updatePieChartWithFilteredCountries(filteredCountries) {
         label: 'Migration Data',
         data: [MenImmigrations, MenEmigrations, WomenImmigrations, WomenEmigrations],
         backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)'
+            'rgba(255, 99, 132, 0.4)',
+            'rgba(54, 162, 235, 0.4)',
+            'rgba(255, 206, 86, 0.4)',
+            'rgba(75, 192, 192, 0.4)'
         ],
         borderColor: [
             'rgba(255, 99, 132, 1)',
@@ -196,6 +196,17 @@ function updatePieChartWithFilteredCountries(filteredCountries) {
 const config = {
     type: 'pie',
     data: piedata,
+    options: {
+      plugins: {
+          legend: {
+            position: 'top', // Options: 'top', 'left', 'bottom', 'right'
+            align: 'center', // Options: 'start', 'center', 'end'
+              labels: {
+                  color: 'white' 
+              }
+          }
+      }
+  }
 };
 
 // Render the chart

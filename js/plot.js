@@ -121,6 +121,11 @@ function updateChartWithFilteredCountries(countryToPlot,filteredCountries) {
       }]
     },
     options: {
+      legend: {
+        labels: {
+          fontColor: 'white'
+        }
+      },
       scales: {
         y: {
           beginAtZero: true,
@@ -151,6 +156,11 @@ function updateChartWithFilteredCountries(countryToPlot,filteredCountries) {
       }]
     },
     options: {
+      legend: {
+        labels: {
+          fontColor: 'white'
+        }
+      },
       scales: {
         y: {
           beginAtZero: true,
@@ -173,6 +183,7 @@ function updateChartWithFilteredCountries(countryToPlot,filteredCountries) {
     type: 'bar',
     data: {
       labels: years,
+
       datasets: [{
         label: `Men Emis in ${plotContext}`,
         data: menEmigrationData,
@@ -182,6 +193,11 @@ function updateChartWithFilteredCountries(countryToPlot,filteredCountries) {
       }]
     },
     options: {
+      legend: {
+        labels: {
+          fontColor: 'white'
+        }
+      },
       scales: {
         y: {
           beginAtZero: true,
@@ -212,6 +228,11 @@ function updateChartWithFilteredCountries(countryToPlot,filteredCountries) {
       }]
     },
     options: {
+      legend: {
+        labels: {
+          fontColor: 'white'
+        }
+      },
       scales: {
         y: {
           beginAtZero: true,
